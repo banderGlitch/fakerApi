@@ -22,6 +22,7 @@ export default function ProductList() {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [isLoadingSearch, setIsLoachingSearch] = useState(false) 
 
     const { data, isLoading, isError, isFetching } = useProducts(page);
     console.log("Data", data)
@@ -50,19 +51,16 @@ export default function ProductList() {
     const handleSearch = useRef(
         _.debounce(async (value) => {
             console.log("value----->", value)
-            // if (!value.trim()) {
-            //     setSearchResults([])
-            //     setIsSearching(false);
-            //     return
-            // }
-
             try {
+                setIsLoachingSearch(true)
                 const res = await axios.get(`https://dummyjson.com/products/search?q=${value}`);
                 console.log("res from debouncing-->", res)
                 setSearchResults(res.data.products || []);
                 setIsSearching(true);
+                setIsLoachingSearch(false)
             } catch (err) {
                 console.error("Search error", err);
+                setIsLoachingSearch(false)
             }
 
         }, 500)
@@ -79,8 +77,13 @@ export default function ProductList() {
 
     return (
         <>
-        <div className='d-flex justify-content-center m-3'>
+        <div className='d-flex row justify-content-center m-3'>
             <input onChange={(e) => handleSearch(e.target.value)} className='w-full' placeholder='Search here'/>
+            {!isLoadingSearch && (
+                <div className='text-center mt-3'>
+                    <div className='spinner-border text-primary' role='status'></div>
+                </div>
+            )}
         </div>
             {isLoading ? (
                 <div className='row'>
