@@ -7,7 +7,8 @@ import ProductSkeleton from './ProductSkeleton';
 import ProductCard from './ProductCard';
 import Loader from './loader';
 import axios from 'axios';
-import _, { values } from 'lodash';
+import _, { flatMap, values } from 'lodash';
+import { Sree_Krushnadevaraya } from 'next/font/google';
 // implementing debouncing
 
 
@@ -22,7 +23,7 @@ export default function ProductList() {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
-    const [isLoadingSearch, setIsLoachingSearch] = useState(false) 
+    const [isLoadingSearch, setIsLoachingSearch] = useState(false)
 
     const { data, isLoading, isError, isFetching } = useProducts(page);
     console.log("Data", data)
@@ -51,8 +52,15 @@ export default function ProductList() {
     const handleSearch = useRef(
         _.debounce(async (value) => {
             console.log("value----->", value)
+            if (!value.trim()){
+                setIsSearching(false)
+                setSearchResults([])
+                return;
+            }
+
             try {
                 setIsLoachingSearch(true)
+                setSearch(value)
                 const res = await axios.get(`https://dummyjson.com/products/search?q=${value}`);
                 console.log("res from debouncing-->", res)
                 setSearchResults(res.data.products || []);
@@ -67,24 +75,66 @@ export default function ProductList() {
 
     ).current
 
+    // prevent event listner to escape to the back of the screen
 
     useEffect(() => {
-        console.log("searchResult", searchResults)
-    },[searchResults])
+        const listner = (e) => {
+            if (e.key === 'Escape') {
+                setIsSearching(false)
+                setSearch('')
+                setSearchResults([])
+            }
+        };
+        window.addEventListener('keydown', listner)
+        return () => window.removeEventListener('keydown', listner)
+    }, []);
+
 
 
 
 
     return (
         <>
-        <div className='d-flex row justify-content-center m-3'>
-            <input onChange={(e) => handleSearch(e.target.value)} className='w-full' placeholder='Search here'/>
-            {!isLoadingSearch && (
-                <div className='text-center mt-3'>
-                    <div className='spinner-border text-primary' role='status'></div>
+            <div className='position-sticky top-0 bg-white z-3 p-3 shadow-sm' style={{ zIndex: 999 }}>
+                <div className='d-flex justify-content-center'>
+                    <input onChange={(e) => handleSearch(e.target.value)} className='w-50' placeholder='Search here' />
                 </div>
-            )}
-        </div>
+                {isLoadingSearch && (
+                    <div className='position-fixed top-50 start-50 translate-middle text-center' style={{ zIndex: 1000 }}>
+                        <div className='spinner-border text-primary' role='status'></div>
+                    </div>
+                )}
+                {isSearching && (
+                    <div className='position-absolute top-20 start-0 w-100 bg-white p-4 border'
+                        style={{
+                            minHeight: '50vh',
+                            zIndex: 998,
+                            overflowY: 'auto'
+                        }}
+                    >
+                        {isLoadingSearch ? null : searchResults.length === 0 ? (
+                            <p className='text-center mt-5'>No products found for <strong>{search}</strong>.</p>
+
+                        ) : (
+                            <>
+                                <p className='text-muted'>
+                                    Showing {searchResults.length} results for <strong>`{search}`</strong>
+                                </p>
+                                <div className='row'>
+                                    {searchResults.map((product, i) => (
+                                        <div className='col-md-3 mb-4' key={i}>
+                                            <ProductCardMini title={product.title} thumbnail={product.thumbnail} />
+                                        </div>
+                                    ))}
+
+                                </div>
+                            </>
+
+                        )}
+
+                    </div>
+                )}
+            </div>
             {isLoading ? (
                 <div className='row'>
                     {Array.from({ length: 8 }).map((_, i) => (
@@ -109,4 +159,24 @@ export default function ProductList() {
         </>
     )
 
+}
+
+
+const ProductCardMini = ({ title, thumbnail }) => {
+    return (
+        <div className='card h-40 border shadow-sm'>
+            <img
+                src={thumbnail}
+                alt={title}
+                className='card-img-top'
+                style={{ height: '120px', objectFit: 'cover' }}
+            />
+            <div className='card-body p-2'>
+                <h6 className='card-title mb-0' style={{ fontSize: '0.9rem' }}>
+                    {title}
+                </h6>
+
+            </div>
+        </div>
+    )
 }
