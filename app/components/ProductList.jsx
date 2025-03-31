@@ -5,8 +5,8 @@ import { useProducts } from '../hooks/useProduct';
 import { useInView } from 'react-intersection-observer';
 import ProductSkeleton from './ProductSkeleton';
 import ProductCard from './ProductCard';
-import Loader from './loader';
 import axios from 'axios';
+import { useEscape } from '../hooks/useEscape';
 import _ from 'lodash'
 // implementing debouncing
 
@@ -19,13 +19,11 @@ export default function ProductList() {
 
     // Search Result
     const [search, setSearch] = useState('');
-    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isLoadingSearch, setIsLoachingSearch] = useState(false)
 
     const { data, isLoading, isError, isFetching } = useProducts(page);
-    console.log("Data", data)
 
     // check it has more data
     // const hasMore = data.total ? allProducts.length > data.total : true
@@ -74,18 +72,13 @@ export default function ProductList() {
 
     ).current
 
-    // prevent event listner to escape to the back of the screen
-    useEffect(() => {
-        const listner = (e) => {
-            if (e.key === 'Escape') {
-                setIsSearching(false)
-                setSearch('')
-                setSearchResults([])
-            }
-        };
-        window.addEventListener('keydown', listner)
-        return () => window.removeEventListener('keydown', listner)
-    }, []);
+    
+    useEscape(() => {
+        setIsSearching(false)
+        setSearch('')
+        setSearchResults([])
+    })
+
 
 
 
