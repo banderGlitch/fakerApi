@@ -7,8 +7,7 @@ import ProductSkeleton from './ProductSkeleton';
 import ProductCard from './ProductCard';
 import Loader from './loader';
 import axios from 'axios';
-import _, { flatMap, values } from 'lodash';
-import { Sree_Krushnadevaraya } from 'next/font/google';
+import _ from 'lodash'
 // implementing debouncing
 
 
@@ -52,7 +51,7 @@ export default function ProductList() {
     const handleSearch = useRef(
         _.debounce(async (value) => {
             console.log("value----->", value)
-            if (!value.trim()){
+            if (!value.trim()) {
                 setIsSearching(false)
                 setSearchResults([])
                 return;
@@ -76,7 +75,6 @@ export default function ProductList() {
     ).current
 
     // prevent event listner to escape to the back of the screen
-
     useEffect(() => {
         const listner = (e) => {
             if (e.key === 'Escape') {
@@ -95,12 +93,12 @@ export default function ProductList() {
 
     return (
         <>
-            <div className='position-sticky top-0 bg-white z-3 p-3 shadow-sm' style={{ zIndex: 999 }}>
+            <div className='position-fixed top-0 w-100 bg-white z-3 p-3 shadow-sm' style={{ zIndex: 999 }}>
                 <div className='d-flex justify-content-center'>
                     <input onChange={(e) => handleSearch(e.target.value)} className='w-50' placeholder='Search here' />
                 </div>
                 {isLoadingSearch && (
-                    <div className='position-fixed top-50 start-50 translate-middle text-center' style={{ zIndex: 1000 }}>
+                    <div className='d-flex justify-content-center  text-center mt-10' style={{ zIndex: 1000 }}>
                         <div className='spinner-border text-primary' role='status'></div>
                     </div>
                 )}
@@ -120,7 +118,7 @@ export default function ProductList() {
                                 <p className='text-muted'>
                                     Showing {searchResults.length} results for <strong>`{search}`</strong>
                                 </p>
-                                <div className='row'>
+                                <div className='row overflow-hidden'>
                                     {searchResults.map((product, i) => (
                                         <div className='col-md-3 mb-4' key={i}>
                                             <ProductCardMini title={product.title} thumbnail={product.thumbnail} />
@@ -135,41 +133,47 @@ export default function ProductList() {
                     </div>
                 )}
             </div>
-            {isLoading ? (
+            <div style={{marginTop:'70px'}}>
                 <div className='row'>
-                    {Array.from({ length: 8 }).map((_, i) => (
-                        <div className='col-md-3 mb-4' key={i}>
-                            <ProductSkeleton key={i} />
-                        </div>
-                    ))}
-                    <Loader />
+                    {(isLoading && allProducts.length === 0)
+                        ? Array.from({ length: 8 }).map((_, i) => (
+                            <div className='col-md-3 mb-4' key={i}>
+                                <ProductSkeleton />
+                            </div>
+                        ))
+                        : allProducts.map((product, index) => (
+                            <div className='col-md-3 mb-4' key={index}>
+                                <ProductCard {...product} />
+                            </div>
+                        ))
+                    }
                 </div>
-            ) : isError ? (
-                <p className="text-danger">Error loading products</p>
-            ) : (
-                <div className='row'>
-                    {allProducts && allProducts?.map((product, index) => (
-                        <div className='col-md-3 mb-4' key={index}>
-                            <ProductCard  {...product} />
-                        </div>
-                    ))}
-                </div>
-            )}
-            {mode === 'infinite' && <div ref={ref} style={{ height: 1 }} />}
+                {isFetching && !isLoading && (
+                    <div className='d-flex justify-content-center my-3'>
+                        <div className='spinner-border text-primary' role='status' />
+                    </div>
+                )}
+                {mode === 'infinite' && <div ref={ref} style={{ height: 1 }} />}
+            </div>
         </>
     )
 
 }
 
 
+
+
+
+
+
 const ProductCardMini = ({ title, thumbnail }) => {
     return (
-        <div className='card h-40 border shadow-sm'>
+        <div className='d-flex flex-column h-40 p-1 border shadow-sm'>
             <img
                 src={thumbnail}
                 alt={title}
                 className='card-img-top'
-                style={{ height: '120px', objectFit: 'cover' }}
+                style={{ height: '50px', width: '50px', objectFit: 'cover' }}
             />
             <div className='card-body p-2'>
                 <h6 className='card-title mb-0' style={{ fontSize: '0.9rem' }}>
