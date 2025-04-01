@@ -67,6 +67,8 @@ export default function ProductList() {
         }, 500)
     ).current;
 
+    
+
     useEscape(() => {
         setIsSearching(false);
         setSearch("");
