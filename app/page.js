@@ -15,15 +15,15 @@ const queryClient = new QueryClient({
   }
 })
 
-const persister = createSyncStoragePersister({
-   storage : window.localStorage
-})
+// const persister = createSyncStoragePersister({
+//    storage : window.localStorage
+// })
 
-persistQueryClient({
-  queryClient,
-  persister,
-  buster: 'v1'
-})
+// persistQueryClient({
+//   queryClient,
+//   persister,
+//   buster: 'v1'
+// })
 
 
 

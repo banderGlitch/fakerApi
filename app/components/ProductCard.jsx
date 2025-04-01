@@ -1,9 +1,9 @@
 import React from 'react';
-import { useSavedProducts } from '../hooks/useSavedProduct';
+// import { useSavedProducts } from '../hooks/useSavedProduct';
 //  Product card here 
-const ProductCard = ({ title, price, thumbnail, description, key, id }) => {
+const ProductCard = ({ title, price, thumbnail, description, key, id , toggleSaved, isSaved }) => {
 
-    const { toggleSaved, isSaved }  = useSavedProducts()
+    // const { toggleSaved, isSaved }  = useSavedProducts()
     
  
     

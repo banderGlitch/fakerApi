@@ -10,6 +10,7 @@ import { LoaderType_1 } from "./loader";
 import { useEscape } from "../hooks/useEscape";
 import _ from "lodash";
 import ProductCardMini from "./ProductCardMini";
+import { useSavedProducts } from "../hooks/useSavedProduct";
 // implementing debouncing and infinite loading in this 
 
 export default function ProductList() {
@@ -23,6 +24,7 @@ export default function ProductList() {
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isLoadingSearch, setIsLoachingSearch] = useState(false);
+    const { saved, toggleSaved, isSaved } = useSavedProducts();
 
     const { data, isLoading, isError, isFetching } = useProducts(page);
 
@@ -87,6 +89,11 @@ export default function ProductList() {
                         className="w-50"
                         placeholder="Search here"
                     />
+                    <div>
+                        <button className="btn btn-outline-secondary">
+                        ❤️ Saved <span className="badge bg-danger">{saved.length}</span>
+                        </button>
+                    </div>
                 </div>
                 {isLoadingSearch && (
                     <div
@@ -140,7 +147,7 @@ export default function ProductList() {
                         ))
                         : allProducts.map((product, index) => (
                             <div className="col-md-3 mb-4" key={index}>
-                                <ProductCard {...product} />
+                                <ProductCard saved = {saved} toggleSaved={toggleSaved} isSaved={isSaved} {...product} />
                             </div>
                         ))}
                 </div>
