@@ -27,6 +27,7 @@ export function useSavedProducts() {
 
   // its toggle and untoggle the saved button  
     const toggleSaved = (id) => {
+        console.log("id", id)
         setSaved((prev) => 
             prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
         )

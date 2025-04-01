@@ -1,14 +1,19 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useSavedProducts } from '../hooks/useSavedProduct';
 //  Product card here 
-const ProductCard = ({ title, price, thumbnail, description, key }) => {
+const ProductCard = ({ title, price, thumbnail, description, key, id }) => {
 
-    // useEffect(() => {
-    //    console.log("asdasdasdasdasd",title,thumbnail,description)
-    // },[title, price, thumbnail, description, key])
+    const { toggleSaved, isSaved }  = useSavedProducts()
+    
+ 
     
     return (
         <div className='card h-100 shadow-sm' key={key}>
+            <div className='position-absolute end-0 m-2 left-100'>
+                <button className='btn btn-sm' onClick={() => toggleSaved(id)}>
+                    {isSaved(id) ?  '❤️' : '🤍' }
+                </button>
+            </div>
             <img
                 src={thumbnail}
                 className="card-img-top"

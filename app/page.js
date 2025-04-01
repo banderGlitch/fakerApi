@@ -2,8 +2,8 @@
 import React  from "react";
 import ProductList from "./components/ProductList";
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
-
-import { createSyncStoragePersister, persistQueryClient } from '@tanstack/react-query-persist-client'
+import { persistQueryClient } from '@tanstack/react-query-persist-client'
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 
 
 const queryClient = new QueryClient({
