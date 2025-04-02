@@ -11,6 +11,7 @@ import { useEscape } from "../hooks/useEscape";
 import _ from "lodash";
 import ProductCardMini from "./ProductCardMini";
 import { useSavedProducts } from "../hooks/useSavedProduct";
+import WishListSummary from "./wishlistSummary";
 // implementing debouncing and infinite loading in this 
 
 export default function ProductList() {
@@ -25,6 +26,7 @@ export default function ProductList() {
     const [isSearching, setIsSearching] = useState(false);
     const [isLoadingSearch, setIsLoachingSearch] = useState(false);
     const { saved, toggleSaved, isSaved } = useSavedProducts();
+    const [showWishlist, setShowWishlist] = useState(false);
 
     const { data, isLoading, isError, isFetching } = useProducts(page);
 
@@ -89,10 +91,15 @@ export default function ProductList() {
                         className="w-50"
                         placeholder="Search here"
                     />
-                    <div>
+                    <div className="position-relative">
                         <button className="btn btn-outline-secondary">
                         ❤️ Saved <span className="badge bg-danger">{saved.length}</span>
                         </button>
+                        {showWishlist && (
+                            <div>
+                                <WishListSummary/>
+                            </div>
+                        )}
                     </div>
                 </div>
                 {isLoadingSearch && (

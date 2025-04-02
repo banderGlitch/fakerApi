@@ -34,9 +34,31 @@ export default function WishListSummary() {
 
     }, [saved])
 
+
+    useEffect(() => {
+     console.log("savedProducts", savedProducts)
+    },[savedProducts])
+
     return (
-        <div>
-            <p>this is paragraph </p>
+        <div className='p-4 bg-light rounded shadow-sm'>
+            <h5 className='mb-3'>❤️ Wishlist Summary</h5>
+            {saved.length === 0 ? (
+                <p className='text-muted'>You haven't saved any products yet</p>
+            ): (
+                <>
+                  <p className='text-muted'>
+                    You've saved <strong>{saved.length}</strong> item{saved.length > 1 && 's'}.
+                  </p>
+                  <ul className='list-group'>
+                    {savedProducts.map((product) => (
+                        <li className="list-group-item d-flex justify-content-between" key={product.id}>
+                            <span>{product.list}</span>
+                            <small className='text-muted'>ID: {product.id}</small>
+                        </li>
+                    ))}
+                  </ul>
+                </>
+            )}
         </div>
     )
 }
