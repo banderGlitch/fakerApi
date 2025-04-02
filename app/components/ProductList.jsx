@@ -96,13 +96,13 @@ export default function ProductList() {
                             ❤️ Saved <span className="badge bg-danger">{saved.length}</span>
                         </button>
                         {showWishlist && (
-                            <div className="position-absolute   bg-white border rounder shadow-sm p-3" style={{
+                            <div className="whislist-dropdown position-absolute   bg-white border rounder shadow-sm p-3" style={{
                                 minWidth: '300px',
                                 maxHeight: '400px',
                                 overflowY: 'auto',
                                 zIndex: 1050
                             }}>
-                                <WishListSummary saved={saved} />
+                                <WishListSummary setShowWishlist = {setShowWishlist} saved={saved} />
                             </div>
                         )}
                     </div>

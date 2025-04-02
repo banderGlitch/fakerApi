@@ -9,7 +9,7 @@ import axios from 'axios';
 const BASEURL = 'https://dummyjson.com/products'
 
 
-export default function WishListSummary({saved }) {
+export default function WishListSummary({saved, setShowWishlist }) {
 
     const [productMap, setProductMap] = useState({})  // Maintaining the object
 
@@ -43,6 +43,20 @@ export default function WishListSummary({saved }) {
     // Extra function 
 
     const savedProducts = saved.map((id) => productMap[id]).filter(Boolean);  // // remove undefined
+
+
+    // when clicked outside the wishlist
+
+    useEffect(() => {
+
+        const handleClickOutSide = (e) => {
+            if (!e.target.closest('.wishlist-dropdown')) {
+                setShowWishlist(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutSide);
+        return () => document.removeEventListener('mousedown', handleClickOutSide)
+    }, [])
 
 
     return (
