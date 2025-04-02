@@ -15,16 +15,6 @@ const queryClient = new QueryClient({
   }
 })
 
-// const persister = createSyncStoragePersister({
-//    storage : window.localStorage
-// })
-
-// persistQueryClient({
-//   queryClient,
-//   persister,
-//   buster: 'v1'
-// })
-
 
 
 export default function Home() {

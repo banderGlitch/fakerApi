@@ -1,4 +1,5 @@
 // custom hook for pressing escape button we have
+// More event handler to be add here
 import { useEffect } from "react";
 export const useEscape = (onEscape) => {
     useEffect(() => {
