@@ -71,7 +71,7 @@ export default function ProductList() {
         }, 500)
     ).current;
 
-    
+
 
     useEscape(() => {
         setIsSearching(false);
@@ -92,12 +92,17 @@ export default function ProductList() {
                         placeholder="Search here"
                     />
                     <div className="position-relative">
-                        <button className="btn btn-outline-secondary">
-                        ❤️ Saved <span className="badge bg-danger">{saved.length}</span>
+                        <button className="btn btn-outline-secondary" onClick={() => setShowWishlist((prev) => !prev)}>
+                            ❤️ Saved <span className="badge bg-danger">{saved.length}</span>
                         </button>
                         {showWishlist && (
-                            <div>
-                                <WishListSummary/>
+                            <div className="position-absolute   bg-white border rounder shadow-sm p-3" style={{
+                                minWidth: '300px',
+                                maxHeight: '400px',
+                                overflowY: 'auto',
+                                zIndex: 1050
+                            }}>
+                                <WishListSummary saved={saved} />
                             </div>
                         )}
                     </div>
@@ -154,7 +159,7 @@ export default function ProductList() {
                         ))
                         : allProducts.map((product, index) => (
                             <div className="col-md-3 mb-4" key={index}>
-                                <ProductCard saved = {saved} toggleSaved={toggleSaved} isSaved={isSaved} {...product} />
+                                <ProductCard saved={saved} toggleSaved={toggleSaved} isSaved={isSaved} {...product} />
                             </div>
                         ))}
                 </div>
