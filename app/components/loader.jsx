@@ -17,3 +17,9 @@ export  const LoaderType_1 = () => {
     </div>
 }
 
+export const Wishlist_Loader = () =>  {
+    <div className="text-center mb-3">
+        <div className="spinner-border text-primary" role="status"/>
+    </div>
+}
+
