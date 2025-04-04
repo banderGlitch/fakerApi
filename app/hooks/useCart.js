@@ -27,11 +27,19 @@ export function useCard() {
     }, [cart])
 
     const addToCart = (product) => {
-        setCart((prev) => {
-            const exists = prev.find((p) => p.id === product.id)
-            exists ? prev : [...prev, product]
-        })
-    }
+        console.log("product--------addToCart------->", product);
+        setCart((prev = []) => {
+          const exists = prev.find((p) => p.id === product.id);
+          return exists ? prev : [...prev, product];
+        });
+      };
+
+    useEffect(() => {
+        console.log("cart",cart)
+    },[cart])
+
+
+    
 
 
     const removeFromCart = (id) => {

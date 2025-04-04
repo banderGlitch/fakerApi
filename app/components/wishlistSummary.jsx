@@ -1,5 +1,3 @@
-// 'use client'
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -74,7 +72,7 @@ export default function WishListSummary({ saved, setShowWishlist }) {
                     {isFetching && (
                         <Wishlist_Loader/>
                     )}
-                    
+
                     <ul className="list-group">
                         {savedProducts?.map((product) => (
                             <li

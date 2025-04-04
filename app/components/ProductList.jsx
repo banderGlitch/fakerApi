@@ -12,12 +12,14 @@ import _ from "lodash";
 import ProductCardMini from "./ProductCardMini";
 import { useSavedProducts } from "../hooks/useSavedProduct";
 import WishListSummary from "./wishlistSummary";
-// implementing debouncing and infinite loading in this 
+import QuickViewModal from "./QuickViewModal";
+import { useCard } from '../hooks/useCart';
 
 export default function ProductList() {
     const [page, setPage] = useState(1);
     const [mode, setMode] = useState("infinite");
     const [allProducts, setAllProducts] = useState([]);
+    const { addToCart, cart } = useCard();
     const { ref, inView } = useInView({ threshold: 1 });
 
     // Search Result
@@ -27,6 +29,8 @@ export default function ProductList() {
     const [isLoadingSearch, setIsLoachingSearch] = useState(false);
     const { saved, toggleSaved, isSaved } = useSavedProducts();
     const [showWishlist, setShowWishlist] = useState(false);
+    const [quickViewProduct, setQuickViewProduct] = useState(null);
+    const [cartShow, setShowCart] = useState(false)
 
     const { data, isLoading, isError, isFetching } = useProducts(page);
 
@@ -79,6 +83,11 @@ export default function ProductList() {
         setSearchResults([]);
     });
 
+
+    useEffect(() => {
+        console.log("quickViewProduct--------------------------->", quickViewProduct)
+    }, [quickViewProduct])
+
     return (
         <>
             <div
@@ -102,9 +111,21 @@ export default function ProductList() {
                                 overflowY: 'auto',
                                 zIndex: 1050
                             }}>
-                                <WishListSummary setShowWishlist = {setShowWishlist} saved={saved} />
+                                <WishListSummary setShowWishlist={setShowWishlist} saved={saved} />
                             </div>
                         )}
+                    </div>
+                    <div className="position-relative">
+                        <button className="btn btn-outline-primary ms-3 position-relative" onClick={() => setShowCart((prev) => !prev)}>
+                            🛒
+                            {cart.length > 0 && (
+                                <span
+                                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style={{ fontSize: '0.7rem' }}
+                                >{cart.length}
+                                </span>
+                            )}
+                        </button>
                     </div>
                 </div>
                 {isLoadingSearch && (
@@ -159,7 +180,7 @@ export default function ProductList() {
                         ))
                         : allProducts.map((product, index) => (
                             <div className="col-md-3 mb-4" key={index}>
-                                <ProductCard saved={saved} toggleSaved={toggleSaved} isSaved={isSaved} {...product} />
+                                <ProductCard addToCart={addToCart} saved={saved} toggleSaved={toggleSaved} isSaved={isSaved} product={product} {...product} setQuickViewProduct={setQuickViewProduct} />
                             </div>
                         ))}
                 </div>
@@ -168,6 +189,12 @@ export default function ProductList() {
                 )}
                 {mode === "infinite" && <div ref={ref} style={{ height: 1 }} />}
             </div>
+            <QuickViewModal
+                addToCart={addToCart}
+                show={!!quickViewProduct}
+                onHide={() => setQuickViewProduct(null)}
+                product={quickViewProduct}
+            />
         </>
     );
 }

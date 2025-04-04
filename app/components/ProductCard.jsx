@@ -1,17 +1,14 @@
 import React from 'react';
-// import { useSavedProducts } from '../hooks/useSavedProduct';
-//  Product card here 
-const ProductCard = ({ title, price, thumbnail, description, key, id , toggleSaved, isSaved }) => {
 
-    // const { toggleSaved, isSaved }  = useSavedProducts()
-    
- 
-    
+const ProductCard = ({ title, price, thumbnail, description, key, id, toggleSaved, isSaved, setQuickViewProduct, product }) => {
+
+
+
     return (
         <div className='card h-100 shadow-sm' key={key}>
             <div className='position-absolute end-0 m-2 left-100'>
                 <button className='btn btn-sm' onClick={() => toggleSaved(id)}>
-                    {isSaved(id) ?  '❤️' : '🤍' }
+                    {isSaved(id) ? '❤️' : '🤍'}
                 </button>
             </div>
             <img
@@ -28,7 +25,10 @@ const ProductCard = ({ title, price, thumbnail, description, key, id , toggleSav
                         {description.slice(0, 60)}...
                     </p>
                 )}
-                <button className="btn btn-sm btn-outline-primary mt-auto">View</button>
+                <button onClick={() => { 
+                    console.log("this was clicked------------>", product)
+                    setQuickViewProduct(product)}} 
+                    className="btn btn-sm btn-outline-primary mt-auto">View</button>
             </div>
         </div>
     )
