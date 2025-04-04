@@ -35,7 +35,7 @@ export function useCard() {
       };
 
     useEffect(() => {
-        console.log("cart",cart)
+        console.log("cart items in the carts---<cartItems>------->",cart)
     },[cart])
 
 

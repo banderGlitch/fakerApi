@@ -14,12 +14,13 @@ import { useSavedProducts } from "../hooks/useSavedProduct";
 import WishListSummary from "./wishlistSummary";
 import QuickViewModal from "./QuickViewModal";
 import { useCard } from '../hooks/useCart';
+import CartSummary from "./CartSummary";
 
 export default function ProductList() {
     const [page, setPage] = useState(1);
     const [mode, setMode] = useState("infinite");
     const [allProducts, setAllProducts] = useState([]);
-    const { addToCart, cart } = useCard();
+    const { addToCart, cart, removeFromCart } = useCard();
     const { ref, inView } = useInView({ threshold: 1 });
 
     // Search Result
@@ -88,6 +89,11 @@ export default function ProductList() {
         console.log("quickViewProduct--------------------------->", quickViewProduct)
     }, [quickViewProduct])
 
+
+    useEffect(() => {
+      console.log("cartShow------------------------->", cartShow)
+    }, [cartShow])
+
     return (
         <>
             <div
@@ -120,12 +126,21 @@ export default function ProductList() {
                             🛒
                             {cart.length > 0 && (
                                 <span
-                                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                  style={{ fontSize: '0.7rem' }}
+                                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style={{ fontSize: '0.7rem' }}
                                 >{cart.length}
                                 </span>
                             )}
                         </button>
+                        {
+                            cartShow && (
+                                <div className="card-dropdown position-absolute end-0 mt-2 bg-white border-rounded shadow-sm p-3"
+                                >
+                                    <CartSummary removeFromCart = {removeFromCart} cartShow={cartShow} setShowCart={setShowCart} cart = {cart} onClose={() => setShowCart(false)} />
+                                </div>
+                            )
+
+                        }
                     </div>
                 </div>
                 {isLoadingSearch && (

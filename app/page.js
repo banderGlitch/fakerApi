@@ -1,9 +1,8 @@
 'use client'
 import React  from "react";
 import ProductList from "./components/ProductList";
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
-import { persistQueryClient } from '@tanstack/react-query-persist-client'
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 
 
 const queryClient = new QueryClient({
@@ -20,9 +19,9 @@ const queryClient = new QueryClient({
 export default function Home() {
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-        <ProductList/>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <ProductList />
+      </QueryClientProvider>
     </>
   );
 }
