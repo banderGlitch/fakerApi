@@ -96,7 +96,7 @@ export default function ProductList() {
 
     return (
         <>
-            <div
+            {/* <div
                 className="position-fixed top-0 w-100 bg-white z-3 p-3 shadow-sm"
                 style={{ zIndex: 999 }}
             >
@@ -184,7 +184,7 @@ export default function ProductList() {
                         )}
                     </div>
                 )}
-            </div>
+            </div> */}
             <div style={{ marginTop: "70px" }}>
                 <div className="row">
                     {isLoading && allProducts.length === 0

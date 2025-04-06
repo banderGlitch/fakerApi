@@ -1,9 +1,9 @@
 'use client'
-import React  from "react";
+import React from "react";
 import ProductList from "./components/ProductList";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +20,9 @@ export default function Home() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <Header />
         <ProductList />
+        <Footer />
       </QueryClientProvider>
     </>
   );
