@@ -1,8 +1,12 @@
 'use client'
 
 import React, { useEffect } from 'react'
+import LoginForm from './LoginForm';
+import { useAuth } from '../services/AuthContext';
 
 export default function CartSummary({ onClose, cart, setShowCart, cartShow, removeFromCart }) {
+
+    const {isAuthenticated, login, logout, showLoginModal, setShowLoginModal} = useAuth()
 
 
     useEffect(() => {
@@ -15,6 +19,16 @@ export default function CartSummary({ onClose, cart, setShowCart, cartShow, remo
         return () => document.removeEventListener('mousedown', handleClickOutside)
 
     }, [setShowCart])
+
+
+
+
+    const handleCheckout = () => {
+        if (!isAuthenticated) {
+            setShowLoginModal(true)
+            return;
+        }
+    }
 
 
     return (
@@ -56,7 +70,7 @@ export default function CartSummary({ onClose, cart, setShowCart, cartShow, remo
                     )
                 }
 
-
+            <button className='btn btn-sm btn-outline-danger' onClick={handleCheckout}>Proceed To checkout</button>
             </div>
         </div>
     )

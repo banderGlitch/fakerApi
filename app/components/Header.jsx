@@ -81,16 +81,6 @@ export default function Header() {
     });
 
 
-    useEffect(() => {
-        console.log("quickViewProduct--------------------------->", quickViewProduct)
-    }, [quickViewProduct])
-
-
-    useEffect(() => {
-      console.log("cartShow------------------------->", cartShow)
-    }, [cartShow])
-
-
     return (
         <div
             className="position-fixed top-0 w-100 bg-white z-3 p-3 shadow-sm"
@@ -107,7 +97,7 @@ export default function Header() {
                         ❤️ Saved <span className="badge bg-danger">{saved.length}</span>
                     </button>
                     {showWishlist && (
-                        <div className="whislist-dropdown position-absolute   bg-white border rounder shadow-sm p-3" style={{
+                        <div className="whislist-dropdown position-absolute  bg-white border rounder shadow-sm p-3" style={{
                             minWidth: '300px',
                             maxHeight: '400px',
                             overflowY: 'auto',

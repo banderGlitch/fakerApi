@@ -1,6 +1,6 @@
 'use client';
 
-import React , {useEffect} from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 export default function QuickViewModal({ show, onHide, product, addToCart }) {
