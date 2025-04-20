@@ -1,57 +1,67 @@
 import axios from "axios";
 
-
-// create Axios instance 
-
+// Create Axios instance
 const API = axios.create({
     baseURL: 'http://localhost:9000',
-    withCredentials: true,  // for cookie-based auth if needed 
+    withCredentials: true,
 });
 
-// Request interceptor to attach access token 
-
+// ✅ 1. Attach access token in requests
 API.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`
+            config.headers.Authorization = `Bearer ${accessToken}`;
         }
-        return config
+        return config;
     },
     (error) => Promise.reject(error)
-)
+);
 
-// Request interceptor to attach access token 
-
-API.interceptors.request.use(
+// ✅ 2. Handle 401 responses & auto-refresh token
+API.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+
         if (
-            error.response?.status === 401 && !originalRequest._retry
+            error.response?.status === 401 &&
+            !originalRequest._retry
         ) {
             originalRequest._retry = true;
 
-            try {
-                const refreshToken = localStorage.getItem("refreshToken");
+            const refreshToken = localStorage.getItem("refreshToken");
+            console.log("🔥 Fetched refreshToken from localStorage:", refreshToken);
 
+            if (!refreshToken) {
+                console.warn("⚠️ No refreshToken found in localStorage.");
+                return Promise.reject({ message: "Refresh token missing on client" });
+            }
+
+            try {
                 const res = await axios.post(
-                    'http://localhost:9000/refresh-token', { refreshToken });
+                    'http://localhost:9000/refresh-token',
+                    { refreshToken },
+                    { withCredentials: true }
+                );
 
                 const { accessToken, refreshToken: newRefreshToken } = res.data;
                 localStorage.setItem("accessToken", accessToken);
                 localStorage.setItem("refreshToken", newRefreshToken);
+
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return API(originalRequest);
             } catch (err) {
-                console.log("Refresh token failed", err);
+                console.log("🔁 Refresh token failed", err);
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
                 return Promise.reject(err);
             }
         }
-        return Promise.reject(error)
+
+        return Promise.reject(error);
     }
-)
+);
+
 
 export default API;

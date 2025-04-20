@@ -9,7 +9,7 @@ export default function LoginForm() {
     const [email, setEmail] = useState("nernaykumar98@gmail.com")
     const [password, setPassword] = useState("test1234")
     const [error, setError] = useState(null)
-    const { showLoginModal, setShowLoginModal } = useAuth();
+    const { showLoginModal, setShowLoginModal,setIsAuthenticated } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -23,7 +23,7 @@ export default function LoginForm() {
             const { accessToken, refreshToken } = res.data;
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
-
+            setIsAuthenticated(true)
             setShowLoginModal(false);
         } catch (err) {
             setError(err?.response?.data?.message || "Login failed");

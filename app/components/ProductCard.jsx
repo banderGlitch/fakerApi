@@ -1,11 +1,6 @@
-import { useEffect } from "react";
 import React  from 'react';
 
 const ProductCard = ({ title, price, thumbnail, description, key, id, toggleSaved, isSaved, setQuickViewProduct, product }) => {
-
-    useEffect(() => {
-       console.log("issaved-------->" , isSaved(id))
-    },[])
 
 
 

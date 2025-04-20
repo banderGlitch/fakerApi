@@ -2,23 +2,24 @@
 
 import React, { useEffect } from 'react'
 import { useAuth } from '../services/AuthContext';
+import ProfilePage from './UserProfile';
 
 
 export default function CartSummary({ onClose, cart, setShowCart, cartShow, removeFromCart }) {
 
-    const {isAuthenticated, showLoginModal, setShowLoginModal} = useAuth()
+    const { isAuthenticated, showLoginModal, setShowLoginModal } = useAuth()
 
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (showLoginModal) return;
-    
+
             const isOutsideCart = !e.target.closest('.cart-drawer');
             if (isOutsideCart && cartShow) {
                 setShowCart(false);
             }
         };
-    
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [cartShow, setShowCart, showLoginModal]);
@@ -27,6 +28,7 @@ export default function CartSummary({ onClose, cart, setShowCart, cartShow, remo
 
 
     const handleCheckout = () => {
+        console.log("isAuthenticated", isAuthenticated)
         if (!isAuthenticated) {
             setShowLoginModal(true)
             return;
@@ -73,7 +75,8 @@ export default function CartSummary({ onClose, cart, setShowCart, cartShow, remo
                     )
                 }
 
-            <button className='btn btn-sm btn-outline-danger' onClick={handleCheckout}>Proceed To checkout</button>
+                <button className='btn btn-sm btn-outline-danger' onClick={handleCheckout}>Proceed To checkout</button>
+                <ProfilePage />
             </div>
         </div>
     )
