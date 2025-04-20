@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./services/AuthContext";
+import { SavedProductsProvider } from "./hooks/SavedProductsContext";
+import { CartProvider } from "./hooks/CartProvider";
 import LoginForm from "./components/LoginForm";
 
 const queryClient = new QueryClient({
@@ -23,10 +25,14 @@ function Home() {
     <>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <Header />
-          <ProductList />
-          <Footer />
-          <LoginForm />
+          <SavedProductsProvider>
+            <CartProvider>
+              <Header />
+              <ProductList />
+              <Footer />
+              <LoginForm />
+            </CartProvider>
+          </SavedProductsProvider>
         </AuthProvider>
       </QueryClientProvider>
     </>

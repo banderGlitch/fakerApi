@@ -5,9 +5,9 @@ import axios from "axios";
 import { useEscape } from "../hooks/useEscape";
 import _ from "lodash";
 import ProductCardMini from "./ProductCardMini";
-import { useSavedProducts } from "../hooks/useSavedProduct";
+import { useSavedProducts } from "../hooks/SavedProductsContext.js";
 import WishListSummary from "./wishlistSummary";
-import { useCard } from '../hooks/useCart';
+import { useCart } from '../hooks/CartProvider';
 import CartSummary from "./CartSummary";
 import { useProducts } from "../hooks/useProduct";
 import { useInView } from "react-intersection-observer";
@@ -16,7 +16,7 @@ export default function Header() {
     const [page, setPage] = useState(1);
     const [mode, setMode] = useState("infinite");
     const [allProducts, setAllProducts] = useState([]);
-    const { addToCart, cart, removeFromCart } = useCard();
+    const { cart, addToCart, removeFromCart, isInCart } = useCart();
     const { ref, inView } = useInView({ threshold: 1 });
 
     // Search Result

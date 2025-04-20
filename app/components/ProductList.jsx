@@ -7,16 +7,16 @@ import ProductSkeleton from "./ProductSkeleton";
 import ProductCard from "./ProductCard";
 import { LoaderType_1 } from "./loader";
 import _ from "lodash";
-import { useSavedProducts } from "../hooks/useSavedProduct";
+import { useSavedProducts } from "../hooks/SavedProductsContext.js";
 import QuickViewModal from "./QuickViewModal";
-import { useCard } from '../hooks/useCart';
+import { useCart } from '../hooks/CartProvider';
 
 
 export default function ProductList() {
     const [page, setPage] = useState(1);
     const [mode, setMode] = useState("infinite");
     const [allProducts, setAllProducts] = useState([]);
-    const { addToCart, } = useCard();
+    const { addToCart, } = useCart();
     const { ref, inView } = useInView({ threshold: 1 });
 
     const { saved, toggleSaved, isSaved } = useSavedProducts();
