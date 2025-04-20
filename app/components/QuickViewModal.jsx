@@ -12,6 +12,7 @@ export default function QuickViewModal({ show, onHide, product, addToCart }) {
         <Modal.Title>{product?.title}</Modal.Title>
       </Modal.Header>
 
+
       <Modal.Body>
         <div className="row">
           <div className="col-md-5">

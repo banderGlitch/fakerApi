@@ -1,24 +1,27 @@
 'use client'
 
 import React, { useEffect } from 'react'
-import LoginForm from './LoginForm';
 import { useAuth } from '../services/AuthContext';
+
 
 export default function CartSummary({ onClose, cart, setShowCart, cartShow, removeFromCart }) {
 
-    const {isAuthenticated, login, logout, showLoginModal, setShowLoginModal} = useAuth()
+    const {isAuthenticated, showLoginModal, setShowLoginModal} = useAuth()
 
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (!e.target.closest('.cart-drawer') && cartShow) {
-                setShowCart(false)
+            if (showLoginModal) return;
+    
+            const isOutsideCart = !e.target.closest('.cart-drawer');
+            if (isOutsideCart && cartShow) {
+                setShowCart(false);
             }
         };
+    
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-
-    }, [setShowCart])
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [cartShow, setShowCart, showLoginModal]);
 
 
 
