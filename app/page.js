@@ -7,7 +7,7 @@ import Footer from "./components/Footer";
 import { AuthProvider } from "./services/AuthContext";
 import { SavedProductsProvider } from "./hooks/SavedProductsContext";
 import { CartProvider } from "./hooks/CartProvider";
-import LoginForm from "./components/LoginForm";
+import LoginRegistration from "./components/LoginRegister";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +30,7 @@ function Home() {
               <Header />
               <ProductList />
               <Footer />
-              <LoginForm />
+              <LoginRegistration />
             </CartProvider>
           </SavedProductsProvider>
         </AuthProvider>

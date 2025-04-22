@@ -12,14 +12,13 @@ export default function ProfilePage() {
             if (!isAuthenticated) return;
             try {
                 const res = await API.get("/profile");
-                console.log("res",res)
                 setProfile(res.data)
             } catch (err) {
                 setError(err?.response?.data?.message || "Failed to load profile");
             }
         }
         fetchProfile();
-    }, [])
+    }, [isAuthenticated])
 
     if (!isAuthenticated) return <div className="text-danger">❌ User not logged In!</div>
 
@@ -32,7 +31,7 @@ export default function ProfilePage() {
         <div className="p-4">
             <h2 className="mb-3">👤 User Profile</h2>
             <ul className="list-group">
-                <li className="list-group-item"><strong>Email:</strong> {profile.email}</li>
+                <li className="list-group-item"><strong>Email:</strong> {profile.user.email}</li>
             </ul>
         </div>
     )

@@ -3,16 +3,17 @@
 import React, { useEffect } from 'react'
 import { useAuth } from '../services/AuthContext';
 import ProfilePage from './UserProfile';
+import Logout from './LogoutComp';
 
 
 export default function CartSummary({ onClose, cart, setShowCart, cartShow, removeFromCart }) {
 
-    const { isAuthenticated, showLoginModal, setShowLoginModal } = useAuth()
+    const { isAuthenticated, showLoginModal, setShowLoginModal , showRegistrationModal } = useAuth()
 
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (showLoginModal) return;
+            if (showLoginModal || showRegistrationModal) return;
 
             const isOutsideCart = !e.target.closest('.cart-drawer');
             if (isOutsideCart && cartShow) {
@@ -76,7 +77,8 @@ export default function CartSummary({ onClose, cart, setShowCart, cartShow, remo
                 }
 
                 <button className='btn btn-sm btn-outline-danger' onClick={handleCheckout}>Proceed To checkout</button>
-                <ProfilePage />
+                <ProfilePage isAuthenticated={isAuthenticated} />
+                <Logout/>
             </div>
         </div>
     )
